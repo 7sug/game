@@ -1,3 +1,211 @@
+import time
+import random
+import os
+from colorama import init, Fore, Back
+init()
+comandlist = ('я', 'инвентарь', 'счет')
+items = ('Старая книга', 'Золотые монеты', 'Ржавый меч')
+
+def helper(a):
+    count = 0
+    while count < 1:
+        if a == 'я':
+            count += 1
+            hero1.commands(a)
+        elif a == 'инвентарь':
+            count += 1
+            hero1.commands(a)
+        elif a == 'счет':
+            count += 1
+            hero1.commands(a)
+        else:
+            break
+
+        if count == 1:
+            count -= 1
+            a = str(input('Что-нибудь еще?(введите команду): '))
+
+class Hero():
+    def __init__(self, name):
+        global families
+        global bodies
+        global inventory
+        global loc
+
+        self.count1 = 0
+        self.count2 = 0
+        self.count3 = 0
+        self.money = 0
+        self.deadmonster = 0
+        self.firsttimefountain = 0
+        self.shopfirsttime = 0
+        locs = ['Старый дом', 'Развилка', 'Деревня', 'Заброшенное поместье']
+        inventory = []
+        bodies = ('Обычный', 'Глаз', 'Рука', 'Нога', 'Обычный', 'Дух', 'Обычный', 'Магия', 'Обычный')
+        families = ('Независимое содружество стихий', 'Вандергоф', 'Ваттерхил', 'Айсбраун')
+        self.name = name
+        self.family = random.choice(families)
+        self.body = random.choice(bodies)
+        self.health = 100
+        if self.family == 'Независимое содружество стихий':
+            self.health = 100
+            self.power = 10
+            self.speed = 150
+            self.lucky = 110
+            self.aliluja = 50
+            self.magic = 20
+        elif self.family == 'Вандергоф':
+            self.health = 150
+            self.power = 30
+            self.speed = 50
+            self.lucky = 50
+            self.aliluja = 10
+            self.magic = 10
+        elif self.family == 'Ваттерхил':
+            self.health = 100
+            self.power = 20
+            self.speed = 120
+            self.lucky = 90
+            self.aliluja = 70
+            self.magic = 15
+        else:
+            self.health = 80
+            self.power = 15
+            self.speed = 100
+            self.lucky = 70
+            self.aliluja = 60
+            self.magic = 30
+        if self.body == 'Глаз':
+            self.health -= 10
+            self.power -= 10
+            self.power -= 10
+            self.speed -= 10
+            self.lucky += 20
+            self.aliluja += 40
+            self.magic += 40
+        elif self.body == 'Рука':
+            self.power = self.power/2
+            self.aliluja = self.aliluja*2
+        elif self.body == 'Нога':
+            self.speed = self.speed/2
+            self.power = self.power*2
+        elif self.body == 'Магия':
+            self.magic += 50
+            self.lucky += 10
+            self.aliluja += 10
+        elif self.body == 'Дух':
+             self.aliluja += self.magic
+             self.magic = 0
+        self.healthConst = self.health
+
+    def showing(self):
+        print('Ваше имя: ' + str(self.name))
+        print('Ваша семья: ' + str(self.family))
+        print('Ваша особенность: ' + str(self.body))
+        print('Ваше здоровье: ' + str(self.health))
+        print('Ваша сила: ' + str(self.power))
+        print('Ваша скорость: ' + str(self.speed))
+        print('Ваша удача: ' + str(self.lucky))
+        print('Ваш природный дар: ' + str(self.aliluja))
+        print('Ваша магия: ' + str(self.magic))
+
+    def HealthDown(self, damage):
+        self.health -= damage
+
+    def backpack(self):
+        c = 0
+        if len(inventory) == 0:
+            print('Инвентарь пуст')
+        else:
+            print(inventory)
+            while True:
+                try:
+                    vvod = str(input('Какой предмет осмотреть?("выход" для выхода) '))
+                    if vvod == 'выход':
+                        break
+                    elif (vvod == 'старая книга') or (vvod =='Старая книга'):
+                        os.startfile(os.getcwd()+'\\stripes\\старая книга.jpg')
+                    elif (vvod == 'Письмо королю') or (vvod == 'письмо королю'):
+                        os.startfile(os.getcwd()+'\\stripes\\письмо королю.jpg')
+                    elif vvod == 'Зелье лечения':
+                        ask = str(input('Оно восстановит вам 30 здоровья. Применить?' ))
+                        if ask == 'да' or 'Да':
+                            if self.health < self.healthConst:
+                                self.health += 30
+                                print('Ваше здоровье восстановленно!')
+                            elif self.health > self.healthConst:
+                                self.health = self.healthConst
+                            elif self.heath == self.healthConst:
+                                print('Ваше здоровье полное!')
+                        else:
+                            break
+
+                    else:
+                        vvod = str(input('Этот предмет нельзя осмотреть. Нажмите ENTER для продолжения: '))
+                        break
+                    break
+                except:
+                    print('Ошибка ввода. Попробуйте снова: ')
+
+
+
+    def showloc(self):
+        print(loc)
+
+    def oldHouse(self):
+        os.system('cls')
+        if self.count1 == 0:
+            print('*Ты видишь перед собой стол*')
+            time.sleep(0.5)
+            print('*Подойдя к столу, ты увидел на нем 3 золотые монетки и старую книгу*')
+            time.sleep(0.5)
+            while True:
+                try:
+                    a3 = str(input('Хочешь взять эти предметы?(да/нет): '))
+                    break
+                except:
+                    print('Ошибка ввода. Попробуйте снова: ')
+            if a3 == 'да':
+                vvod = str(input('Предметы добавлены в инвентарь! Нажмите ENTER для продолжения'))
+                hero1.inventoryAdd(items[0])
+                self.money += 3
+                self.count1 += 1
+            else:
+                self.count1 = 0
+        else:
+            print('дом уже исследован!')
+
+
+    def location(self, loc):
+        newloc = loc
+
+    def inventoryAdd(self, item):
+        inventory.append(item)
+
+    def showMoney(self):
+        print(self.money)
+
+    def commands(self, command):
+        if command == 'я':
+            hero1.showing()
+        elif command == 'инвентарь':
+            hero1.backpack()
+        elif command == 'счет':
+            hero1.showMoney()
+
+
+    def penza(self):
+        locs = ['магазин', 'оружейная', 'ферма']
+        print(locs)
+        ask2 = str(input('Куда дальше?? '))
+        if ask2 == 'магазин':
+            hero1.shop()
+        elif ask2 == 'оружейная':
+            hero1.guns()
+        else:
+            hero1.farm()
+
+
     def guns(self):
         global firstSwordPower
         global sekiraPower1
@@ -241,9 +449,9 @@
         ask = str(input('Напасть? '))
         if ask == 'да':
             os.system('cls')
+            monsterPower = [30, 15, 10, 20, 20, 10, 20, 20, 15, 10]
+            monsterHit = random.choice(monsterPower)
             while self.health > 0 or monsterHP > 0:
-                monsterPower = [30, 15, 10, 20, 20, 10, 20, 20, 15, 10]
-                monsterHit = random.choice(monsterPower)
                 os.system('cls')
                 print('Ваш урон = ' + str(HeroDamage) + ' Урон монстра = ', str(monsterHit))
                 print('Ваше здоровье = ' + str(self.health) + ' Здоровье монстра = ', str(monsterHP))
@@ -283,9 +491,9 @@
         while ask == 'да':
             slimeHP = 50
             slimeSpeed = 50
+            slimePower = [10, 7, 5, 10, 5, 5, 10, 10, 7, 5]
+            slimeHit = random.choice(slimePower)
             while self.health > 0 or slimeHP > 0:
-                slimePower = [10, 7, 5, 10, 5, 5, 10, 10, 7, 5]
-                slimeHit = random.choice(slimePower)
                 os.system('cls')
                 print('Ваш урон = ' + str(HeroDamage) + ' Урон монстра = ', str(slimeHit))
                 print('Ваше здоровье = ' + str(self.health) + ' Здоровье монстра = ', str(slimeHP))
