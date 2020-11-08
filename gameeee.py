@@ -238,6 +238,7 @@ class Hero():
                     if self.money >= firstSwordValue:
                         self.money -= firstSwordValue
                         inventory.append('Ржавый меч')
+                        self.power += firstSwordPower
                     else:
                         print('Недостаточно денег')
             elif ask == 'Секира ужаса' or ask == 'секира ужаса':
@@ -249,6 +250,8 @@ class Hero():
                     if self.money >= sekiraValue:
                         self.money -= sekiraValue
                         inventory.append('Секира ужаса')
+                        self.power += 50
+                        self.magic += 20
                     else:
                         print('Недостаточно денег')
             elif ask == 'Посох обнуления' or ask == 'посох обнуления':
@@ -260,6 +263,8 @@ class Hero():
                     if self.money >= zeroWandValue:
                         self.money -= zeroWandValue
                         inventory.append('Посох обнуления')
+                        self.power += zeroWandPower1
+                        self.magic += zeroWandPower2
                     else:
                         print('Недостаточно денег')
             elif ask == 'Обычный меч' or ask == 'обычный меч':
@@ -270,6 +275,7 @@ class Hero():
                     if self.money >= secondSwordValue:
                         self.money -= secondSwordValue
                         inventory.append('Обычный меч')
+                        self.power += secondSwordPower
                     else:
                         print('Недостаточно денег')
             elif ask == 'ничего' or 'нет':
@@ -281,16 +287,21 @@ class Hero():
         os.system('cls')
         while True:
             print('Если вы купите грядку, то скорость сбора огурцов улеличится!')
-            buying = str(input('Хотите купить грядку?(10 золотых): '))
-            if buying == 'да':
-                if self.money >= 10:
-                    print('Грядка куплена!')
-                    gryadka += 1
-                    self.money -= 10
+            if gryadka < 9:
+                buying = str(input('Хотите купить грядку?(10 золотых): '))
+                if buying == 'да':
+                    if self.money >= 10:
+                        print('Грядка куплена!')
+                        gryadka += 1
+                        self.money -= 10
+                    else:
+                        print('Нет денег на грядку!')
                 else:
-                    print('Нет денег на грядку!')
+                    break
             else:
+                print('Достигнут предел грядок!')
                 break
+
         aks = str(input('Хотите сажать огурцы?(1 золотая за огурец) '))
         if aks == 'да':
             N = int(input('Сколько дней сажать? '))
@@ -336,7 +347,7 @@ class Hero():
                 time.sleep(2)
                 print('Рыбу я буду брать не просто так, конечно')
                 time.sleep(2)
-                print('Я буду платить тебе за одну рыбу 5 золотых монет')
+                print('Я буду платить тебе за одну рыбу 10 золотых монет')
                 time.sleep(2)
                 print('Но для рыбной ловли тебе нужна удочка')
                 time.sleep(2)
@@ -372,7 +383,7 @@ class Hero():
             if lovlya == 'да':
                 N = int(input('Сколько рыбы ловить? '))
                 for i in range(N):
-                    self.money += 5
+                    self.money += 10
                     print('Рыбы поймано = ',a)
                     a+=1
                     time.sleep(10)
@@ -432,20 +443,7 @@ class Hero():
     def dungeon(self):
         monsterHP = 450
         monsterSpeed = 100
-        if len(inventory) > 0:
-            for elem in inventory:
-                if elem == 'Ржавый меч':
-                    HeroDamage = self.power + firstSwordPower
-                elif elem == 'Обычный меч':
-                    HeroDamage = self.power + secondSwordPower
-                elif elem == 'Секира ужаса':
-                    HeroDamage = self.power + sekiraPower1 + sekiraPower2
-                elif elem == 'Посох обнуления':
-                    HeroDamage = self.power + zeroWandPower1 + zeroWandPower2
-                else:
-                    HeroDamage = self.power + self.magic
-        else:
-            HeroDamage = self.power + self.magic
+        HeroDamage = self.power + self.magic
         print('Ты спустился в подвал')
         print('В подвале ты видишь огромного монстра с красными глазами')
         ask = str(input('Напасть? '))
@@ -563,7 +561,7 @@ class Hero():
             print('Желаешь что-нибудь купить?')
             print(shopitems)
             ask = str(input('Что хочешь купить? '))
-            if ask == 'Кожанная куртка':
+            if ask == 'Кожанная куртка' or ask == 'кажонная куртка':
                 print('Данный предмет увеличит твое здоровье на 15 единиц')
                 print('Цена предмета: 50 монет')
                 buy = str(input('Купить?'))
@@ -576,7 +574,7 @@ class Hero():
                         inventory.append('Кожанная куртка')
                     else:
                         print('Недостаточно монет!')
-            elif ask == 'Железный нагрудник':
+            elif ask == 'Железный нагрудник' or ask == 'железный нагрудник':
                 print('Данный предмет увеличит твое здоровье на 30 единиц')
                 print('Цена предмета: 100 монет')
                 buy = str(input('Купить?'))
@@ -589,7 +587,7 @@ class Hero():
                         inventory.append('Железный нагрудник')
                     else:
                         print('Недостаточно монет!')
-            elif ask == 'Ботинки скорости':
+            elif ask == 'Ботинки скорости' or ask == 'ботинки скорости':
                 print('Данный предмет увеличит твою скорость на 15 единиц')
                 print('Цена предмета: 150 монет')
                 buy = str(input('Купить?'))
@@ -601,7 +599,7 @@ class Hero():
                         inventory.append('Ботинки скорости')
                     else:
                         print('Недостаточно монет!')
-            elif ask == 'Зелье лечения':
+            elif ask == 'Зелье лечения' or ask == 'зелье лечения':
                 print('Данный предмет мнговенно восстановит 30 единиц здоровья')
                 print('Цена предмета: 50 монет')
                 buy = str(input('Купить?'))
@@ -625,21 +623,7 @@ class Hero():
                 bossspeed = 150
                 bosshp = 500
                 bosshit = random.choice(bosspower)
-                if len(inventory) > 0:
-                    for elem in inventory:
-                        if elem == 'Ржавый меч':
-                            HeroDamage = self.power + firstSwordPower
-                        elif elem == 'Обычный меч':
-                            HeroDamage = self.power + secondSwordPower
-                        elif elem == 'Секира ужаса':
-                            HeroDamage = self.power + sekiraPower1 + sekiraPower2
-                        elif elem == 'Посох обнуления':
-                            HeroDamage = self.power + zeroWandPower1 + zeroWandPower2
-                        else:
-                            HeroDamage = self.power + self.magic
-                else:
-                    HeroDamage = self.power + self.magic
-
+                HeroDamage = self.power + self.magic
                 while self.health > 0 or bosshp > 0:
                     os.system('cls')
                     print('Ваш урон = ' + str(HeroDamage) + ' Урон монстра = ', str(bosshit))
