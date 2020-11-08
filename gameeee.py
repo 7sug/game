@@ -39,6 +39,7 @@ class Hero():
         self.deadmonster = 0
         self.firsttimefountain = 0
         self.shopfirsttime = 0
+        self.deadboss = 0
         locs = ['Старый дом', 'Развилка', 'Деревня', 'Заброшенное поместье']
         inventory = []
         bodies = ('Обычный', 'Глаз', 'Рука', 'Нога', 'Обычный', 'Дух', 'Обычный', 'Магия', 'Обычный')
@@ -613,7 +614,69 @@ class Hero():
                         print('Недостаточно монет!')
             elif ask == 'ничего' or 'нет':
                 break
+    def boss(self):
+        print('Ты набрался мужества и отправился на бой с боссом!')
+        print('Ты видишь перед собой огромное тело минотавра')
+        print('Его глаза залиты кровью, а в руках огромный топор')
+        fight = str(input('Напасть? '))
+        if self.deadboss == 0:
+            if fight == 'да' or fight == 'Да':
+                bosspower = [50, 50, 50, 100, 150, 35, 50, 80, 25]
+                bossspeed = 150
+                bosshp = 500
+                bosshit = random.choice(bosspower)
+                if len(inventory) > 0:
+                    for elem in inventory:
+                        if elem == 'Ржавый меч':
+                            HeroDamage = self.power + firstSwordPower
+                        elif elem == 'Обычный меч':
+                            HeroDamage = self.power + secondSwordPower
+                        elif elem == 'Секира ужаса':
+                            HeroDamage = self.power + sekiraPower1 + sekiraPower2
+                        elif elem == 'Посох обнуления':
+                            HeroDamage = self.power + zeroWandPower1 + zeroWandPower2
+                        else:
+                            HeroDamage = self.power + self.magic
+                else:
+                    HeroDamage = self.power + self.magic
 
+                while self.health > 0 or bosshp > 0:
+                    os.system('cls')
+                    print('Ваш урон = ' + str(HeroDamage) + ' Урон монстра = ', str(bosshit))
+                    print('Ваше здоровье = ' + str(self.health) + ' Здоровье монстра = ', str(bosshp))
+                    if bossspeed > self.speed:
+                        self.health -= bosshit
+                        if bosshp < 0:
+                            print()
+                            print('Босс повержен! Ты лучший. Гейм овер')
+                            self.money += 100000
+                            inventory.append('Голова минотавра')
+                            self.deadboss = 1
+                            break
+                        elif self.health < 0:
+                            print()
+                            print('Вы проиграли!')
+                            break
+                        bosshp -= HeroDamage
+                    else:
+                        bosshp -= HeroDamage
+                        if bosshp < 0:
+                            print()
+                            print('Босс повержен! Ты лучший. Гейм овер')
+                            self.money += 100000
+                            inventory.append('Голова минотавра')
+                            self.deadboss = 1
+                            break
+                        elif self.health < 0:
+                            print()
+                            print('Вы проиграли!')
+                            break
+                        self.health -= bosshit
+                    time.sleep(1)
+            else:
+                print('Вы покинули локацию, трус!')
+        else:
+            print('Ты уже одолел босса!')
 
 print('О, ты очнулся! Ну и долго же ты спал...')
 print('Что? Не знаешь, где ты? Не знаешь, что происходит?')
@@ -628,7 +691,7 @@ print('3) Не пытайся сломать игру и наслаждайся 
 print('Ну, в путь!')
 print()
 
-towns = ['старый дом', 'деревня', 'река', 'поместье', 'лес', 'фонтан']
+towns = ['старый дом', 'деревня', 'река', 'поместье', 'лес', 'фонтан', 'логово минотавра']
 
 while True:
     print()
@@ -650,3 +713,6 @@ while True:
         hero1.spawner()
     elif ask == 'фонтан':
         hero1.fountain()
+    elif ask == 'логово минотавра':
+        hero1.boss()
+
