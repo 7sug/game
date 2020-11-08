@@ -404,6 +404,7 @@ class Hero():
                 time.sleep(0.5)
                 print('...кое-что про царскую семью')
                 time.sleep(0.5)
+                ent = str(input('Нажми ENTER для продолжения...'))
                 os.system('cls')
                 print(Fore.WHITE)
                 starik = str(input('Помочь? '))
@@ -554,6 +555,7 @@ class Hero():
             print('Здесь ты можешь купить разные предметы, которые тебе обязательно помогут!')
             print('На цены жаловаться смысла нет')
             print('Все равно моя лавка единственная')
+            print()
             self.shopfirsttime = 1
         print()
         while True:
