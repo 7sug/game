@@ -291,7 +291,7 @@ class Hero():
                         print('Оружие купленно!')
                     else:
                         print('Недостаточно денег')
-            elif ask == 'Сасай кудасай' or ask == 'сасай кудасай:'
+            elif ask == 'Сасай кудасай' or ask == 'сасай кудасай':
                 print('Цена товара: ' + str(sasaikudasaiValue))
                 print('Сила: '+ str(sasaikudasaiPower))
                 buy = str(input('Купить? '))
