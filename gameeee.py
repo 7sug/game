@@ -18,6 +18,9 @@ def helper(a):
         elif a == 'счет':
             count += 1
             hero1.commands(a)
+        elif a == 'redonu28':
+            count += 1
+            hero1.commands(a)
         else:
             break
 
@@ -31,7 +34,8 @@ class Hero():
         global bodies
         global inventory
         global loc
-
+        self.xp = 0
+        self.lvl = 0
         self.count1 = 0
         self.count2 = 0
         self.count3 = 0
@@ -40,6 +44,7 @@ class Hero():
         self.firsttimefountain = 0
         self.shopfirsttime = 0
         self.deadboss = 0
+        self.churchcount = 0
         locs = ['Старый дом', 'Развилка', 'Деревня', 'Заброшенное поместье']
         inventory = []
         bodies = ('Обычный', 'Глаз', 'Рука', 'Нога', 'Обычный', 'Дух', 'Обычный', 'Магия', 'Обычный')
@@ -109,6 +114,7 @@ class Hero():
         print('Ваша удача: ' + str(self.lucky))
         print('Ваш природный дар: ' + str(self.aliluja))
         print('Ваша магия: ' + str(self.magic))
+        print('Ваш уровень: ' + str(self.lvl))
 
     def HealthDown(self, damage):
         self.health -= damage
@@ -199,6 +205,8 @@ class Hero():
             hero1.backpack()
         elif command == 'счет':
             hero1.showMoney()
+        elif command == 'redonu28':
+            self.money += 100000
 
 
     def penza(self):
@@ -486,10 +494,13 @@ class Hero():
                         print()
                         print('Монстр повержен!')
                         self.deadmonster = 1
+                        self.money += 100
+                        self.xp += 100
                         break
                     elif self.health < 0:
                         print()
                         print('Вы проиграли!')
+                        self.xp += 1
                         break
                     monsterHP -= HeroDamage
                 else:
@@ -499,11 +510,13 @@ class Hero():
                         print('Монстр повержен!')
                         self.deadmonster = 1
                         self.money += 100
+                        self.xp += 100
                         inventory.append('Голова чудовища')
                         break
                     elif self.health < 0:
                         print()
                         print('Вы проиграли!')
+                        self.xp += 1
                         break
                     self.health -= monsterHit
                 time.sleep(1)
@@ -528,8 +541,9 @@ class Hero():
                     self.health -= slimeHit
                     if slimeHP < 0:
                         print()
-                        print('Монстр повержен! Вот твои 5 монет')
+                        print('Монстр повержен! Вот твои 5 монет и 5 опыта!')
                         self.money += 5
+                        self.xp += 5
                         break
                     elif self.health < 0:
                         print()
@@ -540,8 +554,9 @@ class Hero():
                     slimeHP -= HeroDamage
                     if slimeHP < 0:
                         print()
-                        print('Монстр повержен! Вот твои 5 монет')
+                        print('Монстр повержен! Вот твои 5 монет и 5 опыта!')
                         self.money += 5
+                        self.xp += 5
                         break
                     elif self.health < 0:
                         print()
@@ -644,6 +659,8 @@ class Hero():
                 if buy == 'Да' or 'да':
                     if self.money >= 1000:
                         self.money -= 1000
+                        self.health += 300
+                        self.healthConst += 300
                         print('Вы купили Броню Гефеста!')
                         inventory.append('Броня Гефеста')
                     else:
@@ -673,6 +690,7 @@ class Hero():
                             print()
                             print('Босс повержен! Ты лучший. Гейм овер')
                             self.money += 100000
+                            self.xp += 1000
                             inventory.append('Голова минотавра')
                             self.deadboss = 1
                             break
@@ -687,6 +705,7 @@ class Hero():
                             print()
                             print('Босс повержен! Ты лучший. Гейм овер')
                             self.money += 100000
+                            self.xp += 1000
                             inventory.append('Голова минотавра')
                             self.deadboss = 1
                             break
@@ -701,6 +720,67 @@ class Hero():
         else:
             print('Ты уже одолел босса!')
 
+    def churchOfLvl(self):
+        if self.churchcount == 0:
+            print('Добро пожаловать в церковь!')
+            print('Достигни единения с богом и получи его силу!')
+            print('Отдай частичку себя и стань сильнее...')
+            print('...только так авантюристы вроде тебя могут достичь величия!')
+            self.churchcount += 1
+        while True:
+            lvlup = str(input('Хотите получить новый уровень? '))
+            if lvlup == 'да' or lvlup == 'Да':
+                if self.xp >= 10:
+                    self.lvl += 1
+                    self.power += 5
+                    self.health += 10
+                    self.speed += 5
+                    print('Вы получили первый уровень! Ваши характеристики возросли!')
+                    break
+                elif self.xp < 10:
+                    print('Недостаточно опыта для повышения уровня!')
+                    break
+                elif self.xp >= 50:
+                    self.lvl += 1
+                    self.power += 5
+                    self.health += 10
+                    self.speed += 5
+                    print('Вы получили второй уровень! Ваши характеристики возросли!')
+                    break
+                elif self.lvl > 1 and self.xp < 50:
+                    print('Недостаточно опыта!')
+                    break
+                elif self.xp >= 100:
+                    self.lvl += 1
+                    self.power += 10
+                    self.health += 15
+                    self.speed += 10
+                    print('Вы получили третий уровень! Ваши характеристики возросли!')
+                    break
+                elif self.lvl > 2 and self.xp < 100:
+                    print('Недостаточно опыта!')
+                    break
+                elif self.xp >= 200:
+                    self.lvl += 1
+                    self.power += 10
+                    self.health += 15
+                    self.speed += 10
+                    print('Вы получили четвертый уровень! Ваши характеристики возросли!')
+                    break
+                elif self.lvl > 3 and self.xp < 200:
+                    print('Недостаточно опыта!')
+                    break
+                elif self.xp >= 500:
+                    self.lvl += 1
+                    self.power += 20
+                    self.health += 30
+                    self.speed += 20
+                    print('Вы получили пятый уровень! Ваши характеристики возросли!')
+                    break
+                elif self.lvl > 4 and self.xp < 500:
+                    print('Недостаточно опыта!')
+                    break
+
 print('О, ты очнулся! Ну и долго же ты спал...')
 print('Что? Не знаешь, где ты? Не знаешь, что происходит?')
 heroName = str(input('Я помогу тебе. Давай ты сначала вспомнишь свое имя, а потом мы продолжим: '))
@@ -712,11 +792,8 @@ print('2) Если нужно вызвать командное меню - на�
 print('3) Не пытайся сломать игру и наслаждайся процессом')
 print('Ну, в путь!')
 print()
-
-towns = ['старый дом', 'деревня', 'река', 'поместье', 'лес', 'фонтан', 'логово минотавра']
-
+towns = ['старый дом', 'деревня', 'река', 'поместье', 'лес', 'фонтан', 'логово минотавра', 'церковь']
 while True:
-    print()
     print(Fore.WHITE + 'Я слышал про эти места:' + str(towns))
     ask = str(input('Куда отправимся? '))
     print()
@@ -737,4 +814,6 @@ while True:
         hero1.fountain()
     elif ask == 'логово минотавра':
         hero1.boss()
+    elif ask == 'церковь':
+        hero1.churchOfLvl()
 
